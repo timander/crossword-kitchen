@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { generate, normalize, enumeration, toGrid, type Layout } from "../src/generator.ts";
-import { WORD_BANKS } from "../src/wordbanks.ts";
+import { WORD_BANKS } from "../src/wordbanks/index.ts";
 
 /** Every horizontal/vertical run of 2+ letters in the grid must be exactly one placed word. */
 function assertValid(layout: Layout) {

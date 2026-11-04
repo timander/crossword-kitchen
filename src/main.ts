@@ -1,10 +1,21 @@
 import { generate, enumeration, normalize, type Dir, type Layout, type Placement } from "./generator.ts";
-import { WORD_BANKS } from "./wordbanks.ts";
+import { WORD_BANKS } from "./wordbanks/index.ts";
 import { el, toast, confetti } from "./fx.ts";
 
 // ---------- state ----------
 
 type PageSize = "letter" | "a4";
+
+// Colors live in styles.css under [data-theme="…"]; this list drives the picker.
+const THEMES = [
+  { id: "tomato", name: "Tomato Gingham" },
+  { id: "basil", name: "Basil Garden" },
+  { id: "diner", name: "Blueberry Diner" },
+  { id: "chalkboard", name: "Chalkboard Café" },
+  { id: "berry", name: "Berry Pastry" },
+  { id: "ink", name: "Minimal Ink (saves toner)" },
+] as const;
+type ThemeId = (typeof THEMES)[number]["id"];
 
 interface WordRow {
   word: string;
@@ -17,6 +28,7 @@ interface State {
   nameLine: boolean;
   wordBank: boolean;
   pageSize: PageSize;
+  theme: ThemeId;
   bankId: string;
   words: WordRow[];
   layout: Layout | null;
@@ -37,6 +49,7 @@ function stateFromBank(bankId: string, base?: State): State {
     nameLine: true,
     wordBank: false,
     pageSize: "letter",
+    theme: "tomato",
     ...base,
     bankId: bank.id,
     title: bank.title,
@@ -71,6 +84,8 @@ function save() {
 
 const saved = load();
 let state: State = saved ?? stateFromBank(WORD_BANKS[0].id);
+if (!THEMES.some((t) => t.id === state.theme)) state.theme = "tomato";
+if (!WORD_BANKS.some((b) => b.id === state.bankId)) state.bankId = WORD_BANKS[0].id;
 let reveal = false;
 let active: { key: string; dir: Dir } | null = null;
 
@@ -342,6 +357,37 @@ function updateZoom() {
   sheet.style.setProperty("zoom", zoom < 1 ? String(zoom) : "");
 }
 new ResizeObserver(updateZoom).observe(paperWrap);
+
+// ---------- themes ----------
+
+const themePicker = $("theme-picker");
+
+function renderThemes() {
+  themePicker.replaceChildren(
+    ...THEMES.map((t) => {
+      const b = el("button", {
+        type: "button",
+        class: "swatch",
+        title: t.name,
+        attrs: { "data-theme": t.id, "aria-label": t.name, "aria-pressed": String(state.theme === t.id) },
+      });
+      b.addEventListener("click", () => {
+        state.theme = t.id;
+        applyTheme();
+        save();
+        toast(`🎨 ${t.name}`);
+      });
+      return b;
+    }),
+  );
+}
+
+function applyTheme() {
+  document.documentElement.dataset.theme = state.theme;
+  for (const b of themePicker.children) b.setAttribute("aria-pressed", String(b.getAttribute("data-theme") === state.theme));
+  // Title fonts differ per theme, which changes how much fits on the page.
+  if (state.layout) fitToPage();
+}
 
 // ---------- notice ----------
 
@@ -823,6 +869,8 @@ window.addEventListener("beforeprint", fitToPage);
 // ---------- start ----------
 
 renderBanks();
+renderThemes();
+applyTheme();
 syncForm();
 renderWordList();
 if (!state.layout) doGenerate();
