@@ -5,8 +5,7 @@ export default {
   name: "Food Safety & Nutrition",
   level: "Intro to Foods · High School",
   title: "Safe & Healthy Kitchen Crossword",
-  description:
-    "Review food safety and nutrition vocabulary. Read each clue carefully, then write one letter per square.",
+  description: "Review food safety and nutrition vocabulary. Multi-word answers show their letter counts, e.g. (6, 4).",
   words: [
     { word: "Sanitize", clue: "To reduce germs on a surface to a safe level" },
     { word: "Bacteria", clue: "Tiny living things that can cause foodborne illness" },

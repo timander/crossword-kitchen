@@ -20,9 +20,9 @@ export default {
     { word: "Dozen", clue: "A carton of twelve eggs" },
     { word: "Pinch", clue: "Tiny amount you can hold between your thumb and finger" },
     { word: "Fraction", clue: "Numbers like 1/2 and 3/4 on a measuring cup are written as a ___" },
-    { word: "Yield", clue: "The number of servings a recipe makes" },
+    { word: "Yield", clue: "The total amount or number of servings a recipe makes" },
     { word: "Factor", clue: "Conversion ___: the new yield divided by the original yield" },
     { word: "Double", clue: "To make twice as many servings, multiply every ingredient by two" },
-    { word: "Halve", clue: "To cut a recipe down to half the original amount" },
+    { word: "Halve", clue: "To make a recipe 50% as big, divide every amount by two" },
   ],
 } satisfies WordBank;

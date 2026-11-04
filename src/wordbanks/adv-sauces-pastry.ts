@@ -15,7 +15,7 @@ export default {
     { word: "Roux", clue: "Equal weights of fat and flour cooked together" },
     { word: "Nappe", clue: "Sauce consistency that coats the back of a spoon" },
     { word: "Liaison", clue: "Egg yolks and cream used to enrich and thicken a sauce" },
-    { word: "Slurry", clue: "Starch mixed into cold liquid before thickening" },
+    { word: "Slurry", clue: "Starch stirred into cold liquid, then whisked into a simmering sauce" },
     { word: "Beurre blanc", clue: "Butter sauce mounted into a wine and shallot reduction" },
     { word: "Consomme", clue: "Stock clarified with a raft of egg whites and ground meat" },
     { word: "Pate a choux", clue: "Cooked dough used for eclairs and cream puffs" },

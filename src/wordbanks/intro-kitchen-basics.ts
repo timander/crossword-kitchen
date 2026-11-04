@@ -22,7 +22,7 @@ export default {
     { word: "Recipe", clue: "A list of ingredients and directions for making a dish" },
     { word: "Knead", clue: "To press, fold, and turn bread dough to build gluten" },
     { word: "Saute", clue: "To cook quickly in a little fat over medium-high heat" },
-    { word: "Teaspoon", clue: "Smallest common measuring spoon, abbreviated tsp" },
+    { word: "Teaspoon", clue: "Measuring spoon abbreviated tsp; three of them equal a tablespoon" },
     { word: "Yield", clue: "The number of servings a recipe makes" },
   ],
 } satisfies WordBank;
