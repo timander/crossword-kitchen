@@ -1,0 +1,52 @@
+/* ---------- print ---------- */
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .app-header,
+  .editor,
+  .toolbar,
+  .notice,
+  .hint,
+  .toast,
+  .confetti,
+  dialog {
+    display: none !important;
+  }
+  .layout,
+  .stage,
+  .paper-wrap {
+    display: block;
+    padding: 0;
+    margin: 0;
+  }
+  /* @page margin is 0, so the sheet's own padding is the page margin. */
+  .sheet {
+    box-shadow: none;
+    border-radius: 0;
+    zoom: 1 !important;
+    height: calc(var(--page-h) - 2px);
+    overflow: hidden;
+    break-inside: avoid;
+  }
+  .cell.in-word,
+  .cell.active,
+  .sheet.solved .cell.letter {
+    background: #fff;
+  }
+  .cell.wrong::after {
+    display: none;
+  }
+  .clues li.active {
+    background: none;
+  }
+  .clues li.done {
+    color: inherit;
+  }
+  /* Printed puzzles are blank even if someone has been playing on screen. */
+  .sheet:not(.revealed) .cell input {
+    color: transparent;
+  }
+}

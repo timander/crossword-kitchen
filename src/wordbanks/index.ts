@@ -12,6 +12,9 @@ import advTechniques from "./adv-techniques.ts";
 import advSaucesPastry from "./adv-sauces-pastry.ts";
 import advCommercialKitchen from "./adv-commercial-kitchen.ts";
 import advPoultry from "./adv-poultry.ts";
+import introFishSeafood from "./intro-fish-seafood.ts";
+import gradCulinaryArts from "./grad-culinary-arts.ts";
+import proMichelinKitchen from "./pro-michelin-kitchen.ts";
 
 export type { WordBank };
 
@@ -21,8 +24,14 @@ export const WORD_BANKS: WordBank[] = [
   introPastaGrainsLegumes,
   introRecipeMath,
   introFoodServiceEtiquette,
+  introFishSeafood,
   advTechniques,
   advSaucesPastry,
   advCommercialKitchen,
   advPoultry,
+  gradCulinaryArts,
+  proMichelinKitchen,
 ];
+
+// Loaded on a first visit.
+export const DEFAULT_BANK: WordBank = introKitchenBasics;

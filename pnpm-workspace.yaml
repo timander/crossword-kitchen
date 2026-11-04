@@ -1,2 +1,8 @@
 allowBuilds:
   esbuild: true
+# Supply-chain hardening: don't install versions published less than a day ago.
+minimumReleaseAge: 1440
+overrides:
+  minimatch@<11.0.1: ^11.0.1
+  qs@>=2.2.5 <6.16.0: ^6.16.0
+  qs@>=6.7.0 <=6.16.0: ^6.16.1

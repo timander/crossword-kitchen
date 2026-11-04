@@ -1,0 +1,129 @@
+/* ---------- themes ----------
+   Each theme only overrides these tokens. The printed sheet stays white
+   paper with dark text in every theme; themes tint its accents and title font. */
+
+[data-theme="tomato"] {
+  --bg: #fbf6ec;
+  --surface: #ffffff;
+  --field: #fffdf8;
+  --ink: #2b2118;
+  --muted: #7a6a5a;
+  --line: #e4d6bb;
+  --accent: #e4572e;
+  --accent-dark: #c2431e;
+  --on-accent: #ffffff;
+  --highlight: #fff1c7;
+  --active: #ffcf5c;
+  --toast: #2b2118;
+  --font-title: var(--font-sheet);
+  --header-bg:
+    repeating-linear-gradient(90deg, rgba(228, 87, 46, 0.18) 0 14px, transparent 14px 28px),
+    repeating-linear-gradient(0deg, rgba(228, 87, 46, 0.18) 0 14px, transparent 14px 28px), #fff;
+}
+
+[data-theme="basil"] {
+  --bg: #f2f5ec;
+  --surface: #ffffff;
+  --field: #fbfdf8;
+  --ink: #1f2a1c;
+  --muted: #64735d;
+  --line: #d3dfc6;
+  --accent: #3a7d44;
+  --accent-dark: #2a5c32;
+  --on-accent: #ffffff;
+  --highlight: #e4f2d7;
+  --active: #b7dc94;
+  --toast: #1f2a1c;
+  --font-title: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --header-bg:
+    radial-gradient(circle at 20% 30%, rgba(58, 125, 68, 0.16) 0 7px, transparent 8px) 0 0 / 34px 34px,
+    radial-gradient(circle at 70% 75%, rgba(140, 180, 90, 0.2) 0 5px, transparent 6px) 0 0 / 34px 34px, #f8fbf3;
+}
+
+[data-theme="diner"] {
+  --bg: #eef3fa;
+  --surface: #ffffff;
+  --field: #fafcff;
+  --ink: #1b2233;
+  --muted: #5d6a82;
+  --line: #d2dbea;
+  --accent: #2459c9;
+  --accent-dark: #173f94;
+  --on-accent: #ffffff;
+  --highlight: #fff3b8;
+  --active: #ffd83d;
+  --toast: #1b2233;
+  --font-title: "American Typewriter", "Rockwell", "Courier New", serif;
+  --header-bg: repeating-conic-gradient(#1b2233 0 25%, #ffffff 0 50%) 0 0 / 28px 28px;
+}
+
+[data-theme="chalkboard"] {
+  --bg: #1f2b25;
+  --surface: #2a3830;
+  --field: #24312a;
+  --ink: #f1efe6;
+  --muted: #a9b8ad;
+  --line: #41544a;
+  --accent: #f4a259;
+  --accent-dark: #c9741f;
+  --on-accent: #1f2b25;
+  --highlight: #fff1c7;
+  --active: #ffd27a;
+  --toast: #0f1612;
+  --font-title: "Chalkboard SE", "Comic Neue", "Marker Felt", var(--font-ui);
+  --header-bg:
+    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0)),
+    repeating-linear-gradient(-20deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 9px), #26342d;
+}
+[data-theme="chalkboard"] .app-header {
+  border-bottom-color: #8a6a43;
+  border-bottom-width: 6px;
+}
+
+[data-theme="berry"] {
+  --bg: #fdf1f5;
+  --surface: #ffffff;
+  --field: #fffafc;
+  --ink: #3a1d2b;
+  --muted: #8a6476;
+  --line: #f0d2df;
+  --accent: #d23f7c;
+  --accent-dark: #a32b5f;
+  --on-accent: #ffffff;
+  --highlight: #ffe4ef;
+  --active: #ffb6d3;
+  --toast: #3a1d2b;
+  --font-title: "Snell Roundhand", "Baskerville", Georgia, serif;
+  --header-bg:
+    radial-gradient(circle, rgba(210, 63, 124, 0.22) 0 4px, transparent 5px) 0 0 / 22px 22px,
+    radial-gradient(circle, rgba(255, 182, 211, 0.5) 0 4px, transparent 5px) 11px 11px / 22px 22px, #fff;
+}
+
+:root,
+[data-theme="ink"] {
+  --bg: #f4f4f2;
+  --surface: #ffffff;
+  --field: #ffffff;
+  --ink: #161616;
+  --muted: #6b6b6b;
+  --line: #dcdcd8;
+  --accent: #222222;
+  --accent-dark: #000000;
+  --on-accent: #ffffff;
+  --highlight: #ececea;
+  --active: #d2d2cf;
+  --toast: #161616;
+  --font-title: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --header-bg: #ffffff;
+}
+
+:root {
+  --paper: #ffffff;
+  --font-ui: ui-rounded, "SF Pro Rounded", "Nunito", "Segoe UI", system-ui, sans-serif;
+  --font-sheet: "Avenir Next", "Avenir", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+
+  /* Paper size; JS updates these for A4. */
+  --page-w: 8.5in;
+  --page-h: 11in;
+  --margin: 0.5in;
+}

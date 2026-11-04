@@ -1,4 +1,4 @@
-import type { WordInput } from "../generator.ts";
+import type { WordInput } from "../core/generator.ts";
 
 export interface WordBank {
   /** Stable, unique id (also the file name). */

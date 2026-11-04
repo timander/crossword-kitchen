@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Make printable, playable crossword puzzles from your own words and clues." />
+    <meta name="referrer" content="no-referrer" />
+    <title>Crossword Kitchen</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>"
+    />
+    <style id="page-size">
+      @page {
+        size: letter;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand"><span class="brand-icon" aria-hidden="true">🍳</span> Crossword <em>Kitchen</em></div>
+      <p class="tagline">
+        Type your words &amp; clues, then hit <b>Generate</b>. Play on screen, or print a copy for each student.
+      </p>
+      <div class="themes" role="group" aria-label="Theme">
+        <span>Theme</span>
+        <div id="theme-picker" class="row"></div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside id="editor" class="editor" aria-label="Puzzle editor">
+        <section class="panel">
+          <label class="field" for="bank-select">
+            <span>Start from a word bank</span>
+          </label>
+          <div class="row">
+            <select id="bank-select"></select>
+            <button id="bank-load" type="button" class="btn small">Load</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <label class="field"><span>Title</span><input id="title" type="text" placeholder="My Crossword" /></label>
+          <label class="field">
+            <span>Description / instructions</span>
+            <textarea id="description" rows="3" placeholder="Fill in the puzzle using the clues below."></textarea>
+          </label>
+          <div class="toggles">
+            <label class="check"><input id="opt-name" type="checkbox" /> Name / date line</label>
+            <label class="check"><input id="opt-bank" type="checkbox" /> Show word bank on sheet</label>
+          </div>
+        </section>
+
+        <section class="panel words-panel">
+          <div class="panel-head">
+            <h2>Words &amp; clues <span id="word-count" class="pill" aria-label="usable words"></span></h2>
+            <div class="row">
+              <button id="bulk-open" type="button" class="btn small ghost" title="Paste or copy the whole list as text">
+                Bulk edit
+              </button>
+              <button id="clear-words" type="button" class="btn small ghost" title="Remove all words">Clear</button>
+            </div>
+          </div>
+          <div id="word-list" class="word-list"></div>
+          <button id="add-word" type="button" class="btn add">＋ Add word</button>
+          <div id="warnings" class="warnings" aria-live="polite"></div>
+        </section>
+      </aside>
+
+      <section class="stage" aria-label="Puzzle">
+        <div class="toolbar" role="toolbar" aria-label="Puzzle actions">
+          <button id="toggle-editor" type="button" class="btn" aria-controls="editor" aria-expanded="true">
+            ◀ Hide words
+          </button>
+          <button id="generate" type="button" class="btn primary">✨ Generate</button>
+          <span class="sep" aria-hidden="true"></span>
+          <button id="toggle-answers" type="button" class="btn" aria-pressed="false">🔑 Answers</button>
+          <button id="check" type="button" class="btn">✔ Check</button>
+          <button id="reset" type="button" class="btn">↺ Clear grid</button>
+          <span class="sep" aria-hidden="true"></span>
+          <button id="print-puzzle" type="button" class="btn">🖨 Print puzzle</button>
+          <button id="print-key" type="button" class="btn">🖨 Print key</button>
+          <select id="page-size-select" class="btn" aria-label="Paper size">
+            <option value="letter">Letter</option>
+            <option value="a4">A4</option>
+          </select>
+        </div>
+        <div id="notice" class="notice" role="status" hidden></div>
+        <div id="paper-frame" class="paper-wrap">
+          <article id="sheet" class="sheet" aria-label="Puzzle sheet">
+            <div id="sheet-inner" class="sheet-inner"></div>
+          </article>
+        </div>
+        <p class="hint">
+          Click a square to play. Type to fill · <kbd>Space</kbd> switches across/down · <kbd>Tab</kbd> jumps to the
+          next word · arrow keys move.
+        </p>
+      </section>
+    </main>
+
+    <dialog id="bulk-dialog" class="dialog" aria-labelledby="bulk-title">
+      <h2 id="bulk-title">Bulk edit</h2>
+      <p>
+        One word per line, followed by its clue. Separate them with <code>:</code>, <code>|</code>, a tab, or
+        <code> - </code>.
+      </p>
+      <textarea
+        id="bulk-text"
+        rows="16"
+        spellcheck="false"
+        aria-label="Words and clues, one per line"
+        placeholder="Whisk: Tool used to beat eggs&#10;Colander | Bowl used to drain pasta"
+      ></textarea>
+      <div class="row end">
+        <button id="bulk-cancel" type="button" class="btn ghost">Cancel</button>
+        <button id="bulk-apply" type="button" class="btn primary">Apply</button>
+      </div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
