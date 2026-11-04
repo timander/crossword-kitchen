@@ -1,0 +1,19 @@
+{
+  "name": "crossword-kitchen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build printable, playable crossword puzzles from your own words and clues. Ships as one self-contained HTML file.",
+  "type": "module",
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "dev": "tsx scripts/build.ts --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test test/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
