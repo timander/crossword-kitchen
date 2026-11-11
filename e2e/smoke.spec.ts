@@ -36,8 +36,10 @@ test("loads with a strict CSP and no errors, and plays a word", async ({ page })
 });
 
 test("regenerates, reveals answers, and remembers state across reloads", async ({ page }) => {
-  await page.getByRole("button", { name: /Regenerate/ }).click();
+  await page.locator("#toggle-editor").click();
+  await page.getByRole("button", { name: /Shuffle/ }).click();
   await expect(page.locator("#toast")).toContainText("Fresh layout");
+  await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: /Answers/ }).click();
   await expect(page.locator(".key-badge")).toHaveText("Answer Key");
 

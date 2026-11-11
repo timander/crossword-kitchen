@@ -55,12 +55,81 @@ textarea {
   transform: rotate(-12deg);
 }
 
-.tagline {
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  padding: 0.35rem 0.8rem;
-  border-radius: 10px;
+/* ---------- header actions (teacher tools) ---------- */
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.header-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.menu {
+  position: relative;
+}
+.menu > summary {
+  list-style: none;
+}
+.menu > summary::-webkit-details-marker {
+  display: none;
+}
+.menu > summary::after {
+  content: "▾";
+  font-size: 0.75em;
   color: var(--muted);
-  font-size: 0.92rem;
+}
+.menu[open] > summary {
+  border-color: var(--accent);
+}
+.menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 35;
+  min-width: 15rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.3);
+}
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.menu-item:hover,
+.menu-item:focus-visible {
+  background: var(--highlight);
+  outline: none;
+}
+.menu-item small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.menu-paper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.55rem 0.7rem 0.3rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 
 /* ---------- layout ---------- */
@@ -98,6 +167,12 @@ textarea {
 .drawer-head h2 {
   margin: 0;
   font-size: 1.1rem;
+}
+.drawer-tip {
+  margin: -0.4rem 0.25rem 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
 }
 
 .backdrop {
@@ -401,12 +476,6 @@ select.inline {
   padding: 0.45rem 0.7rem;
   font-size: 0.93rem;
 }
-.toolbar .sep {
-  width: 1px;
-  height: 1.6rem;
-  background: var(--line);
-  margin: 0 0.2rem;
-}
 
 .notice {
   background: var(--highlight);
@@ -416,6 +485,13 @@ select.inline {
   padding: 0.55rem 0.9rem;
   font-size: 0.92rem;
   max-width: var(--page-w);
+}
+.notice p {
+  margin: 0;
+}
+.notice .btn {
+  margin-left: 0.25rem;
+  vertical-align: middle;
 }
 
 .paper-wrap {
@@ -429,6 +505,9 @@ select.inline {
   font-size: 0.85rem;
   margin: 0;
   text-align: center;
+}
+.hint-touch {
+  display: none;
 }
 kbd {
   font-family: inherit;
@@ -538,8 +617,11 @@ kbd {
   .brand {
     font-size: 1.25rem;
   }
-  .tagline {
-    display: none;
+  .header-actions {
+    gap: 0.35rem;
+  }
+  .header-actions .btn {
+    padding: 0.4rem 0.6rem;
   }
   .layout {
     padding: 0.75rem;
@@ -590,14 +672,26 @@ kbd {
     border-radius: 14px;
     width: 100%;
   }
-  .toolbar .sep {
-    display: none;
-  }
   .toolbar .btn {
     padding: 0.4rem 0.55rem;
     font-size: 0.85rem;
   }
-  .hint {
+  .hint-touch {
+    display: inline;
+  }
+  .hint-keys {
     display: none;
+  }
+}
+
+/* Very narrow phones: header buttons show just their icons (labels stay for screen readers). */
+@media (max-width: 420px) {
+  .header-actions .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

@@ -27,6 +27,6 @@ persist(store, storage);
 const app = mountApp(store);
 mountEditor({ store, banks: WORD_BANKS, onGenerate: app.generate });
 
-if (!store.get().layout) app.generate();
+if (!store.get().layout) app.generate({ quiet: true });
 // Fonts change text size, so re-fit the page once they're ready.
 void document.fonts.ready.then(app.render);

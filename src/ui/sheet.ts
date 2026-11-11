@@ -139,7 +139,7 @@ const emptyState = () =>
     "div",
     { class: "empty" },
     el("div", { class: "big", textContent: "🥣" }),
-    el("p", { textContent: "Add some words and clues, then press Generate." }),
+    el("p", { textContent: "No puzzle yet. Open ✏️ Customize to pick a word bank or add your own words." }),
   );
 
 /** Replaces the contents of `root` with the sheet and returns handles to its interactive parts. */

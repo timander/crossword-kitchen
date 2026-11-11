@@ -20,9 +20,30 @@
   <body>
     <header class="app-header">
       <div class="brand"><span class="brand-icon" aria-hidden="true">🍳</span> Crossword <em>Kitchen</em></div>
-      <p class="tagline">
-        Type your words &amp; clues, then hit <b>Generate</b>. Play on screen, or print a copy for each student.
-      </p>
+      <!-- Teacher tools: build the puzzle and print it. -->
+      <nav class="header-actions" aria-label="Make and print">
+        <button id="toggle-editor" type="button" class="btn" aria-controls="editor" aria-expanded="false">
+          <span aria-hidden="true">✏️</span><span class="label">Customize</span>
+        </button>
+        <details id="print-menu" class="menu">
+          <summary class="btn"><span aria-hidden="true">🖨</span><span class="label">Print</span></summary>
+          <div class="menu-panel">
+            <button id="print-puzzle" type="button" class="menu-item">
+              <b>Student copy</b><small>Blank puzzle to fill in</small>
+            </button>
+            <button id="print-key" type="button" class="menu-item">
+              <b>Answer key</b><small>Puzzle with every answer filled in</small>
+            </button>
+            <label class="menu-paper">
+              Paper
+              <select id="page-size-select" class="inline">
+                <option value="letter">Letter</option>
+                <option value="a4">A4</option>
+              </select>
+            </label>
+          </div>
+        </details>
+      </nav>
     </header>
 
     <main class="layout">
@@ -30,8 +51,17 @@
       <aside id="editor" class="editor" aria-labelledby="editor-title" hidden>
         <div class="drawer-head">
           <h2 id="editor-title">Customize</h2>
-          <button id="close-editor" type="button" class="btn small">Done</button>
+          <div class="row">
+            <button id="generate" type="button" class="btn small" title="Rebuild the grid in a new arrangement">
+              🔀 Shuffle
+            </button>
+            <button id="close-editor" type="button" class="btn small primary">Done</button>
+          </div>
         </div>
+        <p class="drawer-tip">
+          Start from a word bank or type your own words. <b>Shuffle</b> rearranges the grid; then print a student copy
+          and an answer key from <b>🖨 Print</b>.
+        </p>
         <section class="panel">
           <label class="field" for="bank-select">
             <span>Start from a word bank</span>
@@ -51,13 +81,6 @@
           <div class="toggles">
             <label class="check"><input id="opt-name" type="checkbox" /> Name / date line</label>
             <label class="check"><input id="opt-bank" type="checkbox" /> Show word bank on sheet</label>
-            <label class="check">
-              Paper
-              <select id="page-size-select" class="inline">
-                <option value="letter">Letter</option>
-                <option value="a4">A4</option>
-              </select>
-            </label>
           </div>
         </section>
 
@@ -78,18 +101,11 @@
       </aside>
 
       <section class="stage" aria-label="Puzzle">
-        <div class="toolbar" role="toolbar" aria-label="Puzzle actions">
-          <button id="toggle-editor" type="button" class="btn" aria-controls="editor" aria-expanded="false">
-            ✏️ Customize
-          </button>
-          <button id="generate" type="button" class="btn primary">✨ Generate</button>
-          <span class="sep" aria-hidden="true"></span>
-          <button id="toggle-answers" type="button" class="btn" aria-pressed="false">🔑 Answers</button>
+        <!-- Player tools: what a student needs while solving. -->
+        <div class="toolbar" role="toolbar" aria-label="Play">
           <button id="check" type="button" class="btn">✔ Check</button>
-          <button id="reset" type="button" class="btn">↺ Clear grid</button>
-          <span class="sep" aria-hidden="true"></span>
-          <button id="print-puzzle" type="button" class="btn">🖨 Print puzzle</button>
-          <button id="print-key" type="button" class="btn">🖨 Print key</button>
+          <button id="reset" type="button" class="btn">↺ Clear</button>
+          <button id="toggle-answers" type="button" class="btn" aria-pressed="false">🔑 Answers</button>
         </div>
         <div id="notice" class="notice" role="status" hidden></div>
         <div id="paper-frame" class="paper-wrap">
@@ -98,8 +114,11 @@
           </article>
         </div>
         <p class="hint">
-          Click a square to play. Type to fill · <kbd>Space</kbd> switches across/down · <kbd>Tab</kbd> jumps to the
-          next word · arrow keys move.
+          <span class="hint-touch">Tap a square or a clue to start typing.</span>
+          <span class="hint-keys">
+            Click a square or a clue, then type · <kbd>Space</kbd> switches across/down · <kbd>Tab</kbd> jumps to the
+            next word · arrow keys move.
+          </span>
         </p>
       </section>
     </main>

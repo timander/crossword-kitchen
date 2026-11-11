@@ -21,7 +21,7 @@ export function mount(overrides: Partial<AppState> = {}) {
   const store = createStore({ ...stateFromBank(DEFAULT_BANK), ...overrides });
   const app = mountApp(store, confirm);
   mountEditor({ store, banks: WORD_BANKS, onGenerate: app.generate, confirm });
-  if (!store.get().layout) app.generate();
+  if (!store.get().layout) app.generate({ quiet: true });
   return { store, app, confirm };
 }
 

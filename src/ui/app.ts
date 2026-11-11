@@ -12,7 +12,8 @@ import { clueLookup, renderSheet, type SheetRefs } from "./sheet.ts";
 import { changed, type Store } from "./store.ts";
 
 export interface App {
-  generate: () => void;
+  /** Builds a fresh layout; `quiet` skips the toast (e.g. the automatic first build). */
+  generate: (options?: { quiet?: boolean }) => void;
   /** Re-render and re-fit the sheet (e.g. once web fonts finish loading). */
   render: () => void;
 }
@@ -87,6 +88,15 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
   }
   const renderLater = debounce(render, 120);
 
+  /** A button inside the notice, so fixing the problem is one tap away. */
+  const noticeAction = (label: string) => {
+    const button = el("button", { type: "button", class: "btn small primary", textContent: label });
+    button.addEventListener("click", () => {
+      doGenerate();
+    });
+    return button;
+  };
+
   function updateNotice() {
     const s = store.get();
     const stale = !!s.layout && signature(s.words) !== s.layoutKey;
@@ -94,15 +104,9 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
     const lines: Node[] = [];
     if (stale)
       lines.push(
-        el(
-          "p",
-          {},
-          "✏️ Your word list changed. Press ",
-          el("b", { textContent: "Regenerate" }),
-          " to rebuild the puzzle.",
-        ),
+        el("p", {}, "✏️ The word list changed since this puzzle was built. ", noticeAction("🔀 Rebuild puzzle")),
       );
-    if (unplaced.length > 0) {
+    else if (unplaced.length > 0) {
       const names = unplaced.map((w) => w.word.toUpperCase()).join(", ");
       lines.push(
         el(
@@ -110,15 +114,15 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
           {},
           "🤔 Couldn't connect ",
           el("b", { textContent: names }),
-          " to the rest of the puzzle. Regenerate to try again, or add a word that shares letters with ",
-          unplaced.length > 1 ? "them." : "it.",
+          ` to the rest of the puzzle. Shuffle to try again, or add a word that shares letters with ${unplaced.length > 1 ? "them" : "it"}. `,
+          noticeAction("🔀 Shuffle"),
         ),
       );
     }
     notice.replaceChildren(...lines);
     notice.hidden = lines.length === 0;
     generateBtn.classList.toggle("pulse", stale || !s.layout);
-    generateBtn.textContent = s.layout ? "🔀 Regenerate" : "✨ Generate";
+    generateBtn.textContent = s.layout ? "🔀 Shuffle" : "✨ Build puzzle";
   }
 
   function applyChrome() {
@@ -127,7 +131,10 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
     editor.hidden = !s.editorOpen;
     backdrop.hidden = !s.editorOpen;
     editorBtn.setAttribute("aria-expanded", String(s.editorOpen));
-    editorBtn.textContent = s.editorOpen ? "✕ Close" : "✏️ Customize";
+    editorBtn.replaceChildren(
+      el("span", { textContent: s.editorOpen ? "✕" : "✏️", ariaHidden: "true" }),
+      el("span", { class: "label", textContent: s.editorOpen ? "Close" : "Customize" }),
+    );
     pageSelect.value = s.pageSize;
     layout.setPageSize(s.pageSize);
   }
@@ -141,7 +148,7 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
 
   // ---------- actions ----------
 
-  function doGenerate() {
+  function doGenerate({ quiet = false } = {}) {
     const words = generatorInput(store.get().words);
     if (words.length < 2) {
       toast("Add at least two words first 🥄");
@@ -151,10 +158,12 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
     player.reset();
     const next = generate(words);
     store.set({ layout: next, layoutKey: signature(store.get().words), entries: {} });
-    toast(`🔀 Fresh layout: ${plural(next.placements.length, "word")}, ${next.cols}×${next.rows} grid`);
+    if (!quiet) toast(`🔀 Fresh layout: ${plural(next.placements.length, "word")}, ${next.cols}×${next.rows} grid`);
   }
 
-  generateBtn.addEventListener("click", doGenerate);
+  generateBtn.addEventListener("click", () => {
+    doGenerate();
+  });
 
   answersBtn.addEventListener("click", () => {
     if (!currentPuzzle()) return;
@@ -237,10 +246,26 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
     window.print();
   }
 
+  // The print menu closes after a choice, on Escape, or on a click anywhere else.
+  const printMenu = byId("print-menu", HTMLDetailsElement);
+  const closePrintMenu = () => {
+    printMenu.open = false;
+  };
+  document.addEventListener("click", (e) => {
+    if (e.target instanceof Node && !printMenu.contains(e.target)) closePrintMenu();
+  });
+  printMenu.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !printMenu.open) return;
+    closePrintMenu();
+    printMenu.querySelector("summary")?.focus();
+  });
+
   byId("print-puzzle", HTMLButtonElement).addEventListener("click", () => {
+    closePrintMenu();
     print(false);
   });
   byId("print-key", HTMLButtonElement).addEventListener("click", () => {
+    closePrintMenu();
     print(true);
   });
 

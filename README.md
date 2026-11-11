@@ -8,12 +8,20 @@ The finished app is **one self-contained file**: `dist/crossword.html` (also pub
 
 ## Using it
 
-1. Pick a word bank and press **Load**, or type your own words and clues. To paste a whole list at once, use **Bulk edit** with one `word: clue` per line.
-2. Press **Generate**. Press **Regenerate** to shuffle until you like the layout.
+The page opens with a ready-to-play puzzle. Teacher tools sit in the top-right corner; the bar above the puzzle is just for solving.
+
+**Teachers: make and print**
+
+1. Press **✏️ Customize**. It opens as a side panel on wide screens and slides in over the puzzle on tablets and phones.
+2. Pick a word bank and press **Load**, or type your own words and clues. To paste a whole list at once, use **Bulk edit** with one `word: clue` per line.
 3. Set the title, instructions, Name/Date/Period line, and optional word bank. The page preview updates as you type.
-4. The editor stays out of the way until you need it: **✏️ Customize** opens it (a side panel on wide screens, a slide-in drawer on tablets and phones), and **Done**, <kbd>Esc</kbd>, or tapping outside closes it. The look is a single toner-friendly black-and-white style.
-5. **Print puzzle** prints a blank student copy. **Print key** prints the filled-in answer key. Both always fit on one page (Letter or A4). For a PDF, choose "Save as PDF" in the print dialog.
-6. To play on screen, click a square and type. <kbd>Space</kbd> switches across/down, <kbd>Tab</kbd> jumps to the next word, and **Check** marks wrong letters. On a phone, tap a square and use the on-screen keyboard.
+4. Press **🔀 Shuffle** until you like the layout. If you change the words, a note above the puzzle offers **Rebuild puzzle**.
+5. Press **Done** (or <kbd>Esc</kbd>, or tap outside), then open **🖨 Print**: **Student copy** prints a blank puzzle and **Answer key** prints it filled in. Both always fit on one page; choose Letter or A4 in the same menu. For a PDF, choose "Save as PDF" in the print dialog.
+
+**Students: play on screen**
+
+- Click or tap a square (or a clue) and type. <kbd>Space</kbd> switches across/down, <kbd>Tab</kbd> jumps to the next word, and arrow keys move. On a phone, tap a square and use the on-screen keyboard.
+- **✔ Check** marks wrong letters, **↺ Clear** empties the grid, and **🔑 Answers** shows the solution.
 
 Your words, settings, and current puzzle are saved in the browser automatically.
 

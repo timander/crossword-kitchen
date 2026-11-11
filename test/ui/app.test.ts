@@ -45,7 +45,7 @@ describe("sheet", () => {
   it("generates a puzzle on first run", () => {
     const { store } = mount();
     expect(store.get().layout?.placements.length).toBeGreaterThan(10);
-    expect($("#generate").textContent).toContain("Regenerate");
+    expect($("#generate").textContent).toContain("Shuffle");
   });
 
   it("shows clue edits live and flags word edits as stale", () => {
@@ -55,7 +55,12 @@ describe("sheet", () => {
     expect($("#notice").hidden).toBe(true);
     typeInto($('[data-index="0"][data-field="word"]', HTMLInputElement), "Dices");
     expect($("#notice").hidden).toBe(false);
-    expect($("#notice").textContent).toContain("Regenerate");
+    expect($("#notice").textContent).toContain("word list changed");
+
+    // The notice's own button rebuilds the puzzle from the new words.
+    $("#notice button").click();
+    expect($("#notice").hidden).toBe(true);
+    expect(store.get().layout?.placements.map((p) => p.answer)).toContain("DICES");
   });
 });
 
@@ -240,6 +245,34 @@ describe("chrome", () => {
     expect(store.get().editorOpen).toBe(false);
     expect($("#editor").hidden).toBe(true);
     expect(document.activeElement).toBe($("#toggle-editor"));
+  });
+
+  it("puts teacher tools in the header and keeps the play bar to solving", () => {
+    fixed();
+    expect(
+      $$(".header-actions > button, .header-actions > details > summary").map((b) => b.id || b.textContent.trim()),
+    ).toEqual(["toggle-editor", "🖨Print"]);
+    expect($$(".toolbar button").map((b) => b.id)).toEqual(["check", "reset", "toggle-answers"]);
+    expect($("#editor").contains($("#generate"))).toBe(true);
+  });
+
+  it("closes the print menu after a choice, on Escape, and on an outside click", () => {
+    fixed();
+    const menu = $("#print-menu", HTMLDetailsElement);
+    menu.open = true;
+    click("#print-puzzle");
+    expect(menu.open).toBe(false);
+    expect(print).toHaveBeenCalled();
+    window.dispatchEvent(new Event("afterprint"));
+
+    menu.open = true;
+    key($("#print-key"), "Escape");
+    expect(menu.open).toBe(false);
+    expect(document.activeElement).toBe(menu.querySelector("summary"));
+
+    menu.open = true;
+    $("#sheet").click();
+    expect(menu.open).toBe(false);
   });
 
   it("changes paper size", () => {
