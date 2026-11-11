@@ -5,7 +5,6 @@
 import type { Layout, Placement, WordInput } from "./generator.ts";
 import type { CellKey, Dir } from "./grid.ts";
 import { DEFAULT_PAGE_SIZE, isPageSize, type PageSize } from "./page.ts";
-import { DEFAULT_THEME, isThemeId, type ThemeId } from "./themes.ts";
 import { clampWords, LIMITS, normalize, type WordRow } from "./words.ts";
 import type { Entries } from "./puzzle.ts";
 
@@ -15,7 +14,7 @@ export interface AppState {
   nameLine: boolean;
   wordBank: boolean;
   pageSize: PageSize;
-  theme: ThemeId;
+  /** Session-only: the editor always starts closed so the puzzle comes first. */
   editorOpen: boolean;
   bankId: string;
   words: WordRow[];
@@ -41,8 +40,7 @@ export function stateFromBank(bank: BankDefaults, base?: Partial<AppState>): App
     nameLine: true,
     wordBank: false,
     pageSize: DEFAULT_PAGE_SIZE,
-    theme: DEFAULT_THEME,
-    editorOpen: true,
+    editorOpen: false,
     ...base,
     bankId: bank.id,
     title: bank.title,
@@ -116,8 +114,7 @@ export function parseState(raw: unknown, fallbackBank: BankDefaults): AppState |
     nameLine: bool(raw.nameLine, base.nameLine),
     wordBank: bool(raw.wordBank, base.wordBank),
     pageSize: isPageSize(raw.pageSize) ? raw.pageSize : base.pageSize,
-    theme: isThemeId(raw.theme) ? raw.theme : base.theme,
-    editorOpen: bool(raw.editorOpen, base.editorOpen),
+    editorOpen: false,
     bankId: str(raw.bankId, 100, base.bankId),
     words: words.length > 0 ? words : [{ word: "", clue: "" }],
     layout: parseLayout(raw.layout),

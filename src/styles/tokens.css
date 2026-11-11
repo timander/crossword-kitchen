@@ -1,0 +1,28 @@
+/* ---------- design tokens ----------
+   One look: Minimal Ink. Black-and-white accents keep printouts toner-friendly. */
+
+:root {
+  --bg: #f4f4f2;
+  --surface: #ffffff;
+  --field: #ffffff;
+  --ink: #161616;
+  --muted: #6b6b6b;
+  --line: #dcdcd8;
+  --accent: #222222;
+  --accent-dark: #000000;
+  --on-accent: #ffffff;
+  --highlight: #ececea;
+  --active: #d2d2cf;
+  --toast: #161616;
+  --font-title: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --header-bg: #ffffff;
+
+  --paper: #ffffff;
+  --font-ui: ui-rounded, "SF Pro Rounded", "Nunito", "Segoe UI", system-ui, sans-serif;
+  --font-sheet: "Avenir Next", "Avenir", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+
+  /* Paper size; JS updates these for A4. */
+  --page-w: 8.5in;
+  --page-h: 11in;
+  --margin: 0.5in;
+}

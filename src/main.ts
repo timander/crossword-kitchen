@@ -1,6 +1,6 @@
 // Composition root: load state, create the store, mount the UI.
 
-import "./styles/themes.css";
+import "./styles/tokens.css";
 import "./styles/app.css";
 import "./styles/sheet.css";
 import "./styles/print.css";

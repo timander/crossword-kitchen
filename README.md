@@ -10,8 +10,8 @@ The finished app is **one self-contained file**: `dist/crossword.html` (also pub
 
 1. Pick a word bank and press **Load**, or type your own words and clues. To paste a whole list at once, use **Bulk edit** with one `word: clue` per line.
 2. Press **Generate**. Press **Regenerate** to shuffle until you like the layout.
-3. Set the title, instructions, Name/Date/Period line, and optional word bank. The page preview updates as you type. **Hide words** collapses the editor so the puzzle gets the whole screen.
-4. Choose a **theme** in the top-right corner: Minimal Ink (the default, and it saves toner), Tomato Gingham, Basil Garden, Blueberry Diner, Chalkboard Café, or Berry Pastry. Themes change the app's look and the accent colors and title font on the printout. The printed page always stays white paper.
+3. Set the title, instructions, Name/Date/Period line, and optional word bank. The page preview updates as you type.
+4. The editor stays out of the way until you need it: **✏️ Customize** opens it (a side panel on wide screens, a slide-in drawer on tablets and phones), and **Done**, <kbd>Esc</kbd>, or tapping outside closes it. The look is a single toner-friendly black-and-white style.
 5. **Print puzzle** prints a blank student copy. **Print key** prints the filled-in answer key. Both always fit on one page (Letter or A4). For a PDF, choose "Save as PDF" in the print dialog.
 6. To play on screen, click a square and type. <kbd>Space</kbd> switches across/down, <kbd>Tab</kbd> jumps to the next word, and **Check** marks wrong letters. On a phone, tap a square and use the on-screen keyboard.
 
@@ -69,10 +69,10 @@ make deploy     # push main → CI tests, builds, and publishes to GitHub Pages
 index.html              page template (Vite entry)
 src/main.ts             composition root: load state, create store, mount UI
 src/core/               pure logic, no DOM: generator, puzzle model & navigation,
-                        words (parse/validate/limits), state validation, page fitting, themes
+                        words (parse/validate/limits), state validation, page fitting
 src/ui/                 DOM: app (wiring), sheet (render), player (play), editor,
                         layout (fit/phone/print), store, storage, dom & fx helpers
-src/styles/             themes.css (color tokens), app.css, sheet.css, print.css
+src/styles/             tokens.css (colors and fonts), app.css, sheet.css, print.css
 src/wordbanks/          one file per bank + index.ts registry
 test/                   Vitest unit (core/) and DOM integration (ui/) tests
 e2e/                    Playwright smoke tests

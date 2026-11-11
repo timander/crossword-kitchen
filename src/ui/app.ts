@@ -1,9 +1,8 @@
-// Wires the sheet, player, toolbar, notices, theme picker, and printing to the store.
+// Wires the sheet, player, toolbar, notices, editor drawer, and printing to the store.
 
 import { generate } from "../core/generator.ts";
 import { buildPuzzle, check, type Puzzle } from "../core/puzzle.ts";
 import type { AppState } from "../core/state.ts";
-import { THEMES } from "../core/themes.ts";
 import { generatorInput, signature } from "../core/words.ts";
 import { byId, debounce, el } from "./dom.ts";
 import { confetti, toast } from "./fx.ts";
@@ -29,7 +28,7 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
   const pageSelect = byId("page-size-select", HTMLSelectElement);
   const notice = byId("notice", HTMLElement);
   const editor = byId("editor", HTMLElement);
-  const themePicker = byId("theme-picker", HTMLElement);
+  const backdrop = byId("editor-backdrop", HTMLElement);
 
   const layout = createSheetLayout({
     sheet,
@@ -124,21 +123,19 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
 
   function applyChrome() {
     const s = store.get();
-    document.documentElement.dataset.theme = s.theme;
-    for (const b of themePicker.children)
-      b.setAttribute("aria-pressed", String(b.getAttribute("data-theme") === s.theme));
     document.body.classList.toggle("editor-hidden", !s.editorOpen);
     editor.hidden = !s.editorOpen;
+    backdrop.hidden = !s.editorOpen;
     editorBtn.setAttribute("aria-expanded", String(s.editorOpen));
-    editorBtn.textContent = s.editorOpen ? "◀ Hide words" : "📝 Words & clues";
+    editorBtn.textContent = s.editorOpen ? "✕ Close" : "✏️ Customize";
     pageSelect.value = s.pageSize;
     layout.setPageSize(s.pageSize);
   }
 
   store.subscribe((s, prev) => {
-    if (changed(s, prev, "theme", "editorOpen", "pageSize")) applyChrome();
+    if (changed(s, prev, "editorOpen", "pageSize")) applyChrome();
     if (changed(s, prev, "words", "layout", "layoutKey")) updateNotice();
-    if (changed(s, prev, "layout", "nameLine", "wordBank", "pageSize", "theme", "editorOpen")) render();
+    if (changed(s, prev, "layout", "nameLine", "wordBank", "pageSize", "editorOpen")) render();
     else if (changed(s, prev, "title", "description", "words")) renderLater();
   });
 
@@ -187,29 +184,33 @@ export function mountApp(store: Store<AppState>, confirm = window.confirm.bind(w
     render();
   });
 
+  // ---------- editor drawer ----------
+  // A side column on wide screens; on narrower ones it slides over the puzzle (see app.css).
+
+  function openEditor() {
+    store.set({ editorOpen: true });
+    byId("close-editor", HTMLButtonElement).focus();
+  }
+
+  function closeEditor() {
+    const hadFocus = editor.contains(document.activeElement);
+    store.set({ editorOpen: false });
+    if (hadFocus) editorBtn.focus();
+  }
+
   editorBtn.addEventListener("click", () => {
-    store.set({ editorOpen: !store.get().editorOpen });
+    if (store.get().editorOpen) closeEditor();
+    else openEditor();
+  });
+  byId("close-editor", HTMLButtonElement).addEventListener("click", closeEditor);
+  backdrop.addEventListener("click", closeEditor);
+  editor.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeEditor();
   });
 
   pageSelect.addEventListener("change", () => {
     if (pageSelect.value === "letter" || pageSelect.value === "a4") store.set({ pageSize: pageSelect.value });
   });
-
-  themePicker.replaceChildren(
-    ...THEMES.map((t) => {
-      const swatch = el("button", {
-        type: "button",
-        class: "swatch",
-        title: t.name,
-        attrs: { "data-theme": t.id, "aria-label": t.name },
-      });
-      swatch.addEventListener("click", () => {
-        store.set({ theme: t.id });
-        toast(`🎨 ${t.name}`);
-      });
-      return swatch;
-    }),
-  );
 
   // ---------- printing ----------
 

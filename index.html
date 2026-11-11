@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="ink">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -23,14 +23,15 @@
       <p class="tagline">
         Type your words &amp; clues, then hit <b>Generate</b>. Play on screen, or print a copy for each student.
       </p>
-      <div class="themes" role="group" aria-label="Theme">
-        <span>Theme</span>
-        <div id="theme-picker" class="row"></div>
-      </div>
     </header>
 
     <main class="layout">
-      <aside id="editor" class="editor" aria-label="Puzzle editor">
+      <div id="editor-backdrop" class="backdrop" hidden></div>
+      <aside id="editor" class="editor" aria-labelledby="editor-title" hidden>
+        <div class="drawer-head">
+          <h2 id="editor-title">Customize</h2>
+          <button id="close-editor" type="button" class="btn small">Done</button>
+        </div>
         <section class="panel">
           <label class="field" for="bank-select">
             <span>Start from a word bank</span>
@@ -50,6 +51,13 @@
           <div class="toggles">
             <label class="check"><input id="opt-name" type="checkbox" /> Name / date line</label>
             <label class="check"><input id="opt-bank" type="checkbox" /> Show word bank on sheet</label>
+            <label class="check">
+              Paper
+              <select id="page-size-select" class="inline">
+                <option value="letter">Letter</option>
+                <option value="a4">A4</option>
+              </select>
+            </label>
           </div>
         </section>
 
@@ -71,8 +79,8 @@
 
       <section class="stage" aria-label="Puzzle">
         <div class="toolbar" role="toolbar" aria-label="Puzzle actions">
-          <button id="toggle-editor" type="button" class="btn" aria-controls="editor" aria-expanded="true">
-            ◀ Hide words
+          <button id="toggle-editor" type="button" class="btn" aria-controls="editor" aria-expanded="false">
+            ✏️ Customize
           </button>
           <button id="generate" type="button" class="btn primary">✨ Generate</button>
           <span class="sep" aria-hidden="true"></span>
@@ -82,10 +90,6 @@
           <span class="sep" aria-hidden="true"></span>
           <button id="print-puzzle" type="button" class="btn">🖨 Print puzzle</button>
           <button id="print-key" type="button" class="btn">🖨 Print key</button>
-          <select id="page-size-select" class="btn" aria-label="Paper size">
-            <option value="letter">Letter</option>
-            <option value="a4">A4</option>
-          </select>
         </div>
         <div id="notice" class="notice" role="status" hidden></div>
         <div id="paper-frame" class="paper-wrap">

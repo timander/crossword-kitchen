@@ -23,7 +23,7 @@ test("loads with a strict CSP and no errors, and plays a word", async ({ page })
   const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute("content");
   expect(csp).toContain("default-src 'none'");
   expect(csp).toContain("require-trusted-types-for 'script'");
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "ink");
+  await expect(page.locator("#editor")).toBeHidden();
 
   await page.locator(".clues li").first().click();
   const answer = (await page.locator(".clues li .ans").first().textContent())?.replace(/[^A-Z]/g, "") ?? "";
@@ -41,9 +41,11 @@ test("regenerates, reveals answers, and remembers state across reloads", async (
   await page.getByRole("button", { name: /Answers/ }).click();
   await expect(page.locator(".key-badge")).toHaveText("Answer Key");
 
-  await page.locator('.swatch[data-theme="chalkboard"]').click();
+  await page.locator("#toggle-editor").click();
+  await page.locator("#title").fill("Saved Title");
   await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "chalkboard");
+  await expect(page.locator(".sheet-title, #sheet h1").first()).toContainText("Saved Title");
+  await expect(page.locator("#editor")).toBeHidden();
 });
 
 test("prints the puzzle and the key on exactly one page each", async ({ page, browserName }, testInfo) => {
@@ -53,6 +55,7 @@ test("prints the puzzle and the key on exactly one page each", async ({ page, br
 
   await page.emulateMedia({ media: "screen" });
   await page.getByRole("button", { name: /Answers/ }).click();
+  await page.locator("#toggle-editor").click();
   await page.locator("#bank-select").selectOption("pro-michelin-kitchen");
   await page.getByRole("button", { name: "Load" }).click();
   await page.locator("#opt-bank").check();
@@ -60,12 +63,16 @@ test("prints the puzzle and the key on exactly one page each", async ({ page, br
   expect(pdfPages(await page.pdf({ preferCSSPageSize: true }))).toBe(1);
 });
 
-test("hides and shows the words panel", async ({ page }) => {
+test("opens and closes the editor", async ({ page }) => {
   const panel = page.locator("#editor");
-  await page.locator("#toggle-editor").click();
   await expect(panel).toBeHidden();
   await page.locator("#toggle-editor").click();
   await expect(panel).toBeVisible();
+  await page.getByRole("button", { name: "Done" }).click();
+  await expect(panel).toBeHidden();
+  await page.locator("#toggle-editor").click();
+  await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
 });
 
 test("fits a phone screen and is playable by tapping", async ({ page }, testInfo) => {
@@ -78,7 +85,13 @@ test("fits a phone screen and is playable by tapping", async ({ page }, testInfo
   const box = await firstCell.boundingBox();
   expect(box?.width).toBeGreaterThanOrEqual(20);
 
+  // The puzzle comes first; the editor opens as a drawer over it and closes with a tap outside.
+  await expect(page.locator("#editor")).toBeHidden();
   await page.locator("#toggle-editor").click();
+  await expect(page.locator("#editor")).toBeVisible();
+  const width = page.viewportSize()?.width ?? 0;
+  await page.mouse.click(width - 10, 300);
+  await expect(page.locator("#editor")).toBeHidden();
   await firstCell.tap();
   await page.keyboard.type("x");
   await expect(firstCell).toHaveValue("X");

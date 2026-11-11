@@ -1,43 +1,3 @@
-/* ---------- theme picker ---------- */
-
-.themes {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-left: auto;
-  background: var(--surface);
-  padding: 0.3rem 0.5rem 0.3rem 0.8rem;
-  border-radius: 999px;
-}
-.themes > span {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.swatch {
-  width: 1.9rem;
-  height: 1.9rem;
-  border-radius: 50%;
-  border: 2px solid var(--line);
-  background: linear-gradient(135deg, var(--bg) 0 50%, var(--accent) 50%);
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.12s;
-}
-.swatch:hover {
-  transform: scale(1.12);
-}
-.swatch[aria-pressed="true"] {
-  outline: 2.5px solid var(--ink);
-  outline-offset: 2px;
-}
-.swatch:focus-visible {
-  outline: 2.5px solid var(--ink);
-  outline-offset: 2px;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -129,10 +89,51 @@ textarea {
   overflow: auto;
   padding-right: 4px;
 }
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+}
+.drawer-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.backdrop {
+  display: none;
+}
+
+/* Too narrow for a side column: the editor slides in over the puzzle. */
 @media (max-width: 1180px) {
   .editor {
-    position: static;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 30;
+    width: min(500px, calc(100vw - 3rem));
     max-height: none;
+    padding: 1rem;
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    background: var(--bg);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+    overscroll-behavior: contain;
+    animation: slide-in 0.2s ease-out;
+  }
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 29;
+    background: rgba(0, 0, 0, 0.35);
+  }
+  body:not(.editor-hidden) {
+    overflow: hidden;
+  }
+}
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
   }
 }
 
@@ -288,9 +289,9 @@ textarea {
 .btn.pulse {
   animation: pulse 1.4s ease-in-out infinite;
 }
-select.btn {
+select.inline {
   width: auto;
-  padding-right: 0.5rem;
+  padding: 0.2rem 0.4rem;
 }
 
 @keyframes pulse {
@@ -511,7 +512,6 @@ kbd {
 /* ---------- accessibility ---------- */
 
 .btn:focus-visible,
-.swatch:focus-visible,
 .word-row .del:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
@@ -541,24 +541,13 @@ kbd {
   .tagline {
     display: none;
   }
-  .themes {
-    margin-left: 0;
-    padding: 0.25rem 0.4rem;
-  }
-  .themes > span {
-    display: none;
-  }
-  .swatch {
-    width: 1.6rem;
-    height: 1.6rem;
-  }
-
   .layout {
     padding: 0.75rem;
     gap: 0.9rem;
   }
   .editor {
-    padding-right: 0;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
   .panel {
     padding: 0.8rem;

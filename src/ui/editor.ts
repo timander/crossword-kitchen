@@ -55,8 +55,8 @@ export function mountEditor({ store, banks, onGenerate, confirm = window.confirm
     const current = signature(words());
     if (current && current !== signature(bank.words) && !confirm(`Replace your current words with “${bank.name}”?`))
       return;
-    const { nameLine, wordBank, pageSize, theme, editorOpen } = store.get();
-    store.set(stateFromBank(bank, { nameLine, wordBank, pageSize, theme, editorOpen }));
+    const { nameLine, wordBank, pageSize, editorOpen } = store.get();
+    store.set(stateFromBank(bank, { nameLine, wordBank, pageSize, editorOpen }));
     syncForm();
     renderRows();
     onGenerate();

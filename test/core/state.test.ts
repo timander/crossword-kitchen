@@ -15,8 +15,8 @@ const bank = {
 
 describe("stateFromBank", () => {
   it("uses the bank's content and keeps given preferences", () => {
-    const s = stateFromBank(bank, { theme: "basil", wordBank: true });
-    expect(s).toMatchObject({ bankId: "test-bank", title: "Test Title", theme: "basil", wordBank: true, layout: null });
+    const s = stateFromBank(bank, { pageSize: "a4", wordBank: true });
+    expect(s).toMatchObject({ bankId: "test-bank", title: "Test Title", pageSize: "a4", wordBank: true, layout: null });
     expect(s.words).toEqual(bank.words);
     expect(s.words[0]).not.toBe(bank.words[0]); // copied, not shared
   });
@@ -30,8 +30,7 @@ describe("stateFromBank", () => {
       nameLine: true,
       wordBank: false,
       pageSize: "letter",
-      theme: "ink",
-      editorOpen: true,
+      editorOpen: false,
       layout: null,
       layoutKey: "",
       entries: {},
@@ -56,8 +55,8 @@ describe("parseState", () => {
   });
 
   it("falls back to defaults for wrong types", () => {
-    const s = parseState({ title: 5, theme: "neon", pageSize: "legal", nameLine: "yes", words: "nope" }, bank);
-    expect(s).toMatchObject({ title: "Test Title", theme: "ink", pageSize: "letter", nameLine: true });
+    const s = parseState({ title: 5, pageSize: "legal", nameLine: "yes", words: "nope" }, bank);
+    expect(s).toMatchObject({ title: "Test Title", pageSize: "letter", nameLine: true });
     expect(s?.words).toEqual([{ word: "", clue: "" }]);
   });
 
@@ -85,7 +84,8 @@ describe("parseState", () => {
   });
 
   it("keeps saved booleans and defaults missing strings", () => {
-    const s = parseState({ nameLine: false, wordBank: true, editorOpen: false }, bank);
+    const s = parseState({ nameLine: false, wordBank: true, editorOpen: true }, bank);
+    // The editor always starts closed, whatever was saved.
     expect(s).toMatchObject({ nameLine: false, wordBank: true, editorOpen: false, layoutKey: "" });
     expect(parseState({ nameLine: "false" }, bank)?.nameLine).toBe(true);
   });

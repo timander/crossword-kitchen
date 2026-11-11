@@ -23,8 +23,10 @@ describe("loadState", () => {
   });
 
   it("validates what it loads", () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ title: "Mine", theme: "evil" }));
-    expect(loadState(localStorage, bank)).toMatchObject({ title: "Mine", theme: "ink" });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ title: "Mine", theme: "evil", editorOpen: true }));
+    const loaded = loadState(localStorage, bank);
+    expect(loaded).toMatchObject({ title: "Mine", editorOpen: false });
+    expect(loaded).not.toHaveProperty("theme");
   });
 });
 

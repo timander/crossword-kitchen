@@ -201,23 +201,45 @@ describe("editor", () => {
 });
 
 describe("chrome", () => {
-  it("switches themes", () => {
+  it("starts with the editor closed, and opens and closes it from the toolbar", () => {
     const { store } = fixed();
-    expect(document.documentElement.dataset.theme).toBe("ink");
-    click('.swatch[data-theme="basil"]');
-    expect(store.get().theme).toBe("basil");
-    expect(document.documentElement.dataset.theme).toBe("basil");
-    expect($('.swatch[data-theme="basil"]').getAttribute("aria-pressed")).toBe("true");
+    expect($("#editor").hidden).toBe(true);
+    expect($("#editor-backdrop").hidden).toBe(true);
+    expect($("#toggle-editor").getAttribute("aria-expanded")).toBe("false");
+
+    click("#toggle-editor");
+    expect(store.get().editorOpen).toBe(true);
+    expect($("#editor").hidden).toBe(false);
+    expect($("#editor-backdrop").hidden).toBe(false);
+    expect($("#toggle-editor").getAttribute("aria-expanded")).toBe("true");
+    expect(document.activeElement).toBe($("#close-editor"));
+
+    click("#toggle-editor");
+    expect($("#editor").hidden).toBe(true);
   });
 
-  it("shows and hides the words panel", () => {
+  it.each([
+    [
+      "Done",
+      () => {
+        click("#close-editor");
+      },
+    ],
+    [
+      "the backdrop",
+      () => {
+        click("#editor-backdrop");
+      },
+    ],
+    ["Escape", () => key($("#title"), "Escape")],
+  ])("closes the editor with %s and returns focus to the toolbar", (_, close) => {
     const { store } = fixed();
     click("#toggle-editor");
+    $("#title").focus();
+    close();
     expect(store.get().editorOpen).toBe(false);
     expect($("#editor").hidden).toBe(true);
-    expect($("#toggle-editor").getAttribute("aria-expanded")).toBe("false");
-    click("#toggle-editor");
-    expect($("#editor").hidden).toBe(false);
+    expect(document.activeElement).toBe($("#toggle-editor"));
   });
 
   it("changes paper size", () => {
